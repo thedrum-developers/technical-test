@@ -1,0 +1,31 @@
+version: '2'
+services:
+    nginx:
+        image: nginx:1.15
+        ports:
+            - 80:80
+        volumes:
+            - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./config/nginx/sites-enabled:/etc/nginx/sites-enabled
+            - ../application:/var/www/application
+        working_dir: /var/www/application
+
+    php-fpm:
+        image: thedrum/php:7.2-fpm-dev
+        environment:
+            XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
+        volumes:
+            - ./config/php/php.ini:/usr/local/etc/php/php.ini
+            - ./config/php/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
+            - ./config/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ../application:/var/www/application
+        working_dir: /var/www/application
+
+    mysql:
+        image: mysql/mysql-server:5.7
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+        volumes:
+            - ./data/mysql:/var/lib/mysql
