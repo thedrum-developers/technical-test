@@ -1,0 +1,168 @@
+<?php
+
+namespace App\Tests\Unit\EventSubscriber;
+
+use App\EventSubscriber\ApiControllerSubscriber;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
+class ApiControllerSubscriberTest extends TestCase
+{
+    public function testGetSubscribedEvents()
+    {
+        $expected = [
+            'kernel.controller' => "onKernelController",
+            'kernel.exception' => 'onKernelException',
+        ];
+        $subscribedEvents = ApiControllerSubscriber::getSubscribedEvents();
+        $this->assertEquals($subscribedEvents, $expected);
+    }
+
+    public function testOnKernelControllerStopsPropagationIfControllerFromEventIsInvalidType()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $event->getController()->willReturn('foo');
+
+        $event->stopPropagation()->shouldBeCalledOnce();
+        $subscriber->onKernelController($event->reveal());
+    }
+
+    public function testOnKernelControllerStopsPropagationIfControllerFromEventIsInvalidInterface()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $event->getController()->willReturn(['foo', new \stdClass()]);
+
+        $event->stopPropagation()->shouldBeCalledOnce();
+        $subscriber->onKernelController($event->reveal());
+    }
+
+    public function testRequestContentIsNotModifiedIfTypeIsNotJson()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $controller = $this->prophesize('App\Controller\Api\AgencyApiController')->reveal();
+        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $parameterBag = $this->prophesize('Symfony\Component\HttpFoundation\ParameterBag');
+
+        $request->getContent()->willReturn('{"foo": "bar"}');
+        $request->getContentType()->willReturn('text');
+        $request->request = $parameterBag->reveal();
+        $event->getRequest()->willReturn($request->reveal());
+        $event->getController()->willReturn([$controller]);
+
+        $subscriber->onKernelController($event->reveal());
+        $parameterBag->replace()->shouldNotHaveBeenCalled();
+    }
+
+    public function testRequestContentIsNotModifiedIfEmpty()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $controller = $this->prophesize('App\Controller\Api\AgencyApiController')->reveal();
+        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $parameterBag = $this->prophesize('Symfony\Component\HttpFoundation\ParameterBag');
+
+        $request->getContent()->willReturn('');
+        $request->getContentType()->willReturn('json');
+        $request->request = $parameterBag->reveal();
+        $event->getRequest()->willReturn($request->reveal());
+        $event->getController()->willReturn([$controller]);
+
+        $subscriber->onKernelController($event->reveal());
+        $parameterBag->replace()->shouldNotHaveBeenCalled();
+    }
+
+    public function testBadRequestHttpExceptionIsThrownIfRequestContentIsMalformed()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $controller = $this->prophesize('App\Controller\Api\AgencyApiController')->reveal();
+        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $parameterBag = $this->prophesize('Symfony\Component\HttpFoundation\ParameterBag');
+
+        $request->getContent()->willReturn('Foo');
+        $request->getContentType()->willReturn('json');
+        $request->request = $parameterBag->reveal();
+        $event->getRequest()->willReturn($request->reveal());
+        $event->getController()->willReturn([$controller]);
+
+        $this->expectException(BadRequestHttpException::class);
+        $subscriber->onKernelController($event->reveal());
+    }
+
+    public function testRequestDataIsReplacedWithJsonDecodedArray()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\FilterControllerEvent');
+        $controller = $this->prophesize('App\Controller\Api\AgencyApiController')->reveal();
+        $request = $this->prophesize('Symfony\Component\HttpFoundation\Request');
+        $parameterBag = $this->prophesize('Symfony\Component\HttpFoundation\ParameterBag');
+
+        $request->getContent()->willReturn('{"Foo": "Bar"}');
+        $request->getContentType()->willReturn('json');
+        $request->request = $parameterBag->reveal();
+        $event->getRequest()->willReturn($request->reveal());
+        $event->getController()->willReturn([$controller]);
+
+        $subscriber->onKernelController($event->reveal());
+        $parameterBag->replace(Argument::is(["Foo" => "Bar"]))->shouldHaveBeenCalled();
+    }
+
+    public function testOnKernelExceptionCorrectlyModifiesHeaders()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent');
+        $exception = $this->prophesize('Exception');
+        $event->getException()->willReturn($exception);
+
+        // Anonymous functions are used to get and set the event mock's response property, so the mock created in the
+        // subscriber can be tested.
+        $setResponseCallback = function (array $argsArray) {
+            $this->reveal()->response = $argsArray[0];
+        };
+        $getResponseCallback = function () {
+            return $this->reveal()->response;
+        };
+        $event->setResponse(Argument::type('Symfony\Component\HttpFoundation\Response'))
+            ->will($setResponseCallback)->shouldBeCalledOnce();
+        $event->getResponse()->will($getResponseCallback);
+
+        $subscriber->onKernelException($event->reveal());
+        $actual = $event->reveal()->getResponse()->headers->get('Content-Type');
+        $this->assertEquals('application/json', $actual);
+    }
+
+    public function testOnKernelExceptionCorrectlySetsResponseContent()
+    {
+        $subscriber = new ApiControllerSubscriber();
+        $event = $this->prophesize('Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent');
+        // As exception classes are final use an anonymous class as a mock to override the `getMessage()` method.
+        $exception = new class
+        {
+            public function getMessage()
+            {
+                return 'Exception Message';
+            }
+        };
+        $event->getException()->willReturn($exception);
+
+        // Anonymous functions are used to get and set the event mock's response property, so the mock created in the
+        // subscriber can be tested.
+        $setResponseCallback = function ($response) {
+            $this->reveal()->response = $response;
+        };
+        $getResponseCallback = function () {
+            return $this->reveal()->response[0];
+        };
+        $event->setResponse(Argument::type('Symfony\Component\HttpFoundation\Response'))
+            ->will($setResponseCallback)->shouldBeCalledOnce();
+        $event->getResponse()->will($getResponseCallback);
+
+        $subscriber->onKernelException($event->reveal());
+        $actual = $event->reveal()->getResponse()->getContent();
+        $this->assertEquals('{"error": "Exception Message"}', $actual);
+    }
+}

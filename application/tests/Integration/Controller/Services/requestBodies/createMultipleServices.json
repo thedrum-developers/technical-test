@@ -1,0 +1,46 @@
+{
+    "data": [
+        {
+            "type": "services",
+            "attributes": {
+                "name": "First Created Service",
+                "slug": "first-created-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "2"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "services",
+            "attributes": {
+                "name": "Second Created Service",
+                "slug": "second-created-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# Note: ShellCheck `source` directives will only work if `shellcheck` is
+# executed in the relative path root.
+
+# Set a fallback `script_dir` pointing to the project root in case this script
+# is run in place.
+project_root_dir=..
+script_dir=${script_dir:-$(readlink -e "$(dirname "$0")/$project_root_dir")}
+
+init() {
+    common_dir="utils/common"
+    interactive=--interactive
+    ansi=--ansi
+    # shellcheck source=utils/common/common_init.sh
+    . "$script_dir/$common_dir/common_init.sh"
+    common_init "php network" "$@" || exit 1
+}
+
+docker_run() {
+    docker_opts="$common_docker_opts
+        --user $user:$(id -g)
+        --network $network
+        --env DATABASE_URL=$symfony_db_url
+        $interactive
+        $image bin/console $ansi"
+    # Disable ShellCheck warning as word splitting for `docker_opts` is
+    # desired behaviour.
+    # shellcheck disable=SC2086
+    docker run $docker_opts "$@"
+}
+
+init "$@"
+docker_run "$@"

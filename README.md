@@ -1,63 +1,182 @@
-# The Drum Technical Test
+# Chris Bradbury Technical Test
 
-The goal of this test is to create a RESTful API using the PHP framework of your choice.
+Request and response bodies are JSON:API-esque. Examples for the requirements
+will be given below, more can be found in the "Agencies" and "Services"
+integration tests directories.
 
-The API should focus on two entities: agencies and services, with a relationship between the two entities - an agency can provide multiple services, and a service can be offered by multiple agencies.
+Please let me know if you have further questions.
 
-An example Docker Compose configuration is provided in this repository that you may use as a base for your development environment. It will require some tweaking depending on your framework, however, if you are more comfortable with another environment such as Vagrant or Homestead please use that instead.
+## Setup and Teardown
 
-Please fork this repository, and place your application code in the `application` directory.
+Running the `setup` file in the root directory will build and start the 
+development environment. The app should be available immediately on `localhost`.
+Running `setup` with the `--tests` option will run all tests before setup
+exits.
 
-## Requirements
+After testing the `teardown` script will stop the running Docker containers and
+delete a couple of Docker volumes used by the app.
 
-- The API should have some form of token based authentication.
-- There should be testing in place covering the key areas of the API - this can be unit and / or functional testing using PHPUnit, Behat etc.
+## Use
+
+Please set the "x-api-key" header field to "1234567890" to authenticate.
+The server will be available on `http://localhost/api/`. Sending a `GET` request 
+to the `services` and `agencies` endpoints will fetch the relevant indexes.
 
 ## Expected Functionality
 
-The following functionality should be accessible via appropriate RESTful HTTP calls.
+The following functionality is accessible via appropriate RESTful HTTP calls.
 
 ### Agencies
 
-- Retrieve an index of agencies
-- View details of single agency by retrieving it by its ID
-- Create a new agency
+#### Retrieve an index of agencies:
+```http request
+GET http://localhost/api/agencies
+Content-Type: application/json
+x-api-key: 1234567890
+```
+
+#### View details of single agency by retrieving it by its ID:
+```http request
+GET http://localhost/api/agencies/1
+Content-Type: application/json
+x-api-key: 1234567890
+```
+
+#### Create a new agency:
+```http request
+POST http://localhost/api/agencies
+Content-Type: application/json
+x-api-key: 1234567890
+
+{
+    "data": [
+        {
+            "type": "agencies",
+            "attributes": {
+                "name": "First Created Agency",
+                "contactEmail": "hello@test.com",
+                "webAddress": "http://test.com",
+                "shortDescription": "The testiest chips known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "2"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
 
 ### Services
 
-- Retrieve an index of services
-- View details of a single service by retrieving it by its slug
+#### Retrieve an index of services:
+```http request
+GET http://localhost/api/services
+Content-Type: application/json
+x-api-key: 1234567890
+```
+
+#### View details of a single service by retrieving it by its slug:
+```http request
+GET http://localhost/api/services/web-development
+Content-Type: application/json
+x-api-key: 1234567890
+```
 
 ### Relationships
 
-- View the services an agency offers
-- Update the services an agency offers
+#### View the services an agency offers:
 
-## Seed / Fixture Data
+*View full details of the related services.*
+```http request
+GET http://localhost/api/agencies/1/services
+Content-Type: application/json
+x-api-key: 1234567890
+```
 
-The following fixture / seed data should be used for your API:
+*View a relationships object containing the related services.*
+```http request
+GET http://localhost/api/agencies/1/relationships/services
+Content-Type: application/json
+x-api-key: 1234567890
+```
 
-### Agencies
+#### Update the services an agency offers
 
-|      Agency Name      |     Contact Email     |                Web Address                |                 Short Description                  | Established |
-| --------------------- | --------------------- | ----------------------------------------- | -------------------------------------------------- | ----------- |
-| RoRo's Rocket Chips   | hello@roro.com        | http://roro.com                           | The fieriest chips known to man.                   |        2019 |
-| Heavy Profesh Web Dev | us@greatdevs.biz      | https://greatdevs.biz                     | The most professional developers in town.          |        1994 |
-| Shass Kinsalott       | sounds@shasskinsal.ot | https://shasskinsal.ot                    | Post-modern audio branding agency based in London. |        2000 |
+*Only updating service relationships:*
+```http request
+PUT http://localhost/api/agencies/1
+Content-Type: application/json
+x-api-key: 1234567890
 
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "agencies",
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "2"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
 
-### Services
+*Updating both service relationships and agency details:*
+```http request
+PUT http://localhost/api/agencies/1
+Content-Type: application/json
+x-api-key: 1234567890
 
-|  Service Name   |      Slug       |
-| --------------- | --------------- |
-| Web Development | web-development |
-| PPC             | ppc             |
-| SEO             | seo             |
-
-### Agency <-> Service Relationship
-
-|          Agency Name          |       Services       |
-| ----------------------------- | -------------------- |
-| RoRo's Rocket Chips           | Web Development, PPC |
-| Heavy Profesh Web Dev         | Web Development, SEO |
-| Shass Kinsalott               | PPC, SEO             |
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "agencies",
+            "attributes": {
+                "name": "First Updated agency",
+                "contactEmail": "hello@firstupdated.com",
+                "webAddress": "http://firstupdated.com",
+                "shortDescription": "The firstiest update known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "2"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
+```

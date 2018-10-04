@@ -1,0 +1,37 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "id": "1",
+            "attributes": {
+                "name": "RoRo's Rocket Chips",
+                "contactEmail": "hello@roro.com",
+                "webAddress": "http://roro.com",
+                "shortDescription": "The fieriest chips known to man.",
+                "established": "2019"
+            },
+            "links": {
+                "self": "http://localhost/api/services/web-development/agencies/1",
+                "related": "http://localhost/api/agencies/1"
+            }
+        },
+        {
+            "type": "agencies",
+            "id": "2",
+            "attributes": {
+                "name": "Heavy Profesh Web Dev",
+                "contactEmail": "us@greatdevs.biz",
+                "webAddress": "https://greatdevs.biz",
+                "shortDescription": "The most professional developers in town.",
+                "established": "1994"
+            },
+            "links": {
+                "self": "http://localhost/api/services/web-development/agencies/2",
+                "related": "http://localhost/api/agencies/2"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/services/web-development/agencies"
+    }
+}

@@ -1,0 +1,21 @@
+security:
+    providers:
+        in_memory: { memory: ~ }
+        api_key_user_provider:
+            id: App\Security\ApiKeyUserProvider
+
+    firewalls:
+        main:
+            anonymous: true
+            pattern: ^/api
+            stateless: true
+            simple_preauth:
+                authenticator: App\Security\ApiAuthenticator
+            provider: api_key_user_provider
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+#
+#    access_control:
+##        # - { path: ^/admin, roles: ROLE_ADMIN }
+##        # - { path: ^/profile, roles: ROLE_USER }
