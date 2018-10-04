@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Stop Docker.
+cd ./environment && \
+    docker-compose down \
+    ||  { echo "Error: Docker failed to stop."; exit 1 ;} \
+    && cd ..
+
+docker volume rm chrbrdtechtest_data > /dev/null 2>&1 \
+    || echo "Error: Failed to remove the data volume \`chrbrdtechtest_data\`!!!"
+docker volume rm chrbrdtechtest_composer_cache > /dev/null 2>&1 \
+    || echo "Error: Failed to remove the composer cache volume \`chrbrdtechtest_composer_cache\`!!!"

@@ -1,0 +1,29 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "agencies",
+            "attributes": {
+                "name": "First Updated agency",
+                "contactEmail": "hello@firstupdated.com",
+                "webAddress": "http://firstupdated.com",
+                "shortDescription": "The firstiest update known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "2"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

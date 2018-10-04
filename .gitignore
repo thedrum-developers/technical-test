@@ -1,3 +1,4 @@
-/environment/.env
-/environment/data/mysql/
-!/environment/data/mysql/.gitignore
+.env
+.phpunit/
+vendor/
+var/

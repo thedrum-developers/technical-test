@@ -1,0 +1,36 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "id": "2",
+            "attributes": {
+                "name": "Second Updated Agency",
+                "contactEmail": "us@secondupdated.biz",
+                "webAddress": "https://secondupdated.biz",
+                "shortDescription": "The second most professional update in town.",
+                "established": "1994"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "2"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/agencies/2/relationships/services",
+                        "related": "http://localhost/api/agencies/2/services"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/2"
+            }
+        }
+    ]
+}

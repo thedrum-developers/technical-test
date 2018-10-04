@@ -1,0 +1,31 @@
+{
+    "data": [
+        {
+            "type": "services",
+            "id": "1",
+            "attributes": {
+                "name": "Web Development",
+                "slug": "web-development"
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/1/services/web-development",
+                "related": "http://localhost/api/services/web-development"
+            }
+        },
+        {
+            "type": "services",
+            "id": "2",
+            "attributes": {
+                "name": "PPC",
+                "slug": "ppc"
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/1/services/ppc",
+                "related": "http://localhost/api/services/ppc"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/agencies/1/services"
+    }
+}

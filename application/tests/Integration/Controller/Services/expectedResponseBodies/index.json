@@ -1,0 +1,40 @@
+{
+    "data": [
+        {
+            "type": "services",
+            "id": "1",
+            "attributes": {
+                "name": "Web Development",
+                "slug": "web-development"
+            },
+            "links": {
+                "self": "http://localhost/api/services/web-development"
+            }
+        },
+        {
+            "type": "services",
+            "id": "2",
+            "attributes": {
+                "name": "PPC",
+                "slug": "ppc"
+            },
+            "links": {
+                "self": "http://localhost/api/services/ppc"
+            }
+        },
+        {
+            "type": "services",
+            "id": "3",
+            "attributes": {
+                "name": "SEO",
+                "slug": "seo"
+            },
+            "links": {
+                "self": "http://localhost/api/services/seo"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/services"
+    }
+}

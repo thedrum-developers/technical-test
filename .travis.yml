@@ -1,0 +1,12 @@
+language: php
+
+php:
+- 7.1
+- 7.2
+
+before_script: sudo service mysql stop
+
+script: ./setup --tests
+
+notifications:
+    email: false
