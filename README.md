@@ -116,7 +116,7 @@ x-api-key: 1234567890
 
 *Only updating service relationships:*
 ```http request
-PUT http://localhost/api/agencies/1/relationships/services
+PUT http://localhost/api/agencies/1
 Content-Type: application/json
 x-api-key: 1234567890
 
@@ -146,7 +146,7 @@ x-api-key: 1234567890
 
 *Updating both service relationships and agency details:*
 ```http request
-PUT http://localhost/api/agencies/1/relationships/services
+PUT http://localhost/api/agencies/1
 Content-Type: application/json
 x-api-key: 1234567890
 
