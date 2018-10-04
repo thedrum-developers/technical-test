@@ -1,0 +1,68 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "id": "1",
+            "attributes": {
+                "name": "First Updated agency",
+                "contactEmail": "hello@firstupdated.com",
+                "webAddress": "http://firstupdated.com",
+                "shortDescription": "The firstiest update known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "2"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/agencies/1/relationships/services",
+                        "related": "http://localhost/api/agencies/1/services"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/1"
+            }
+        },
+        {
+            "type": "agencies",
+            "id": "2",
+            "attributes": {
+                "name": "Second Updated Agency",
+                "contactEmail": "us@secondupdated.biz",
+                "webAddress": "https://secondupdated.biz",
+                "shortDescription": "The second most professional update in town.",
+                "established": "1994"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/agencies/2/relationships/services",
+                        "related": "http://localhost/api/agencies/2/services"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/2"
+            }
+        }
+    ]
+}

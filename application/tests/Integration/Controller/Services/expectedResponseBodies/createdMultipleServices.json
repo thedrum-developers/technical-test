@@ -1,0 +1,65 @@
+{
+    "data": [
+        {
+            "type": "services",
+            "id": "4",
+            "attributes": {
+                "name": "First Created Service",
+                "slug": "first-created-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "2"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/services/first-created-service/relationships/agencies",
+                        "related": "http://localhost/api/services/first-created-service/agencies"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/services/first-created-service"
+            }
+        },
+        {
+            "type": "services",
+            "id": "5",
+            "attributes": {
+                "name": "Second Created Service",
+                "slug": "second-created-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "3"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/services/second-created-service/relationships/agencies",
+                        "related": "http://localhost/api/services/second-created-service/agencies"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/services/second-created-service"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/services"
+    }
+}

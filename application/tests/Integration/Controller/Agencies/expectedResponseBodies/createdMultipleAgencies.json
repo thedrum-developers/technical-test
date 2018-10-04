@@ -1,0 +1,71 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "id": "4",
+            "attributes": {
+                "name": "First Created Agency",
+                "contactEmail": "hello@test.com",
+                "webAddress": "http://test.com",
+                "shortDescription": "The testiest chips known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "2"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/agencies/4/relationships/services",
+                        "related": "http://localhost/api/agencies/4/services"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/4"
+            }
+        },
+        {
+            "type": "agencies",
+            "id": "5",
+            "attributes": {
+                "name": "Second Created Agency",
+                "contactEmail": "hello@testagain.com",
+                "webAddress": "http://testagain.com",
+                "shortDescription": "The testiest man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/agencies/5/relationships/services",
+                        "related": "http://localhost/api/agencies/5/services"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/5"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/agencies"
+    }
+}

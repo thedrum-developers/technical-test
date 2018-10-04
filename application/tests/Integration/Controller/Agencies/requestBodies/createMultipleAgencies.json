@@ -1,0 +1,52 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "attributes": {
+                "name": "First Created Agency",
+                "contactEmail": "hello@test.com",
+                "webAddress": "http://test.com",
+                "shortDescription": "The testiest chips known to man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "2"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "agencies",
+            "attributes": {
+                "name": "Second Created Agency",
+                "contactEmail": "hello@testagain.com",
+                "webAddress": "http://testagain.com",
+                "shortDescription": "The testiest man.",
+                "established": "2019"
+            },
+            "relationships": {
+                "services": {
+                    "data": [
+                        {
+                            "type": "services",
+                            "id": "1"
+                        },
+                        {
+                            "type": "services",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

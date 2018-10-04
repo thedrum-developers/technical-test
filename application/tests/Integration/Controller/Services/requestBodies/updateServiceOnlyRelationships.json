@@ -1,0 +1,22 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "services",
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "2"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "3"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

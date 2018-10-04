@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Copy .env.dist files to .env files.
+{ cp ./environment/.env.dist ./environment/.env \
+    && cp ./application/.env.dist ./application/.env ;} \
+    || { echo "Error: Failed to copy .env.dist files to .env."; exit 1 ;}
+
+# Start up Docker.
+cd ./environment && \
+    docker-compose up --build -d \
+    ||  { echo "Error: Docker failed to start."; exit 1 ;} \
+    && cd ..
+
+# Update composer.
+./com update || { echo "Error: Failed to update Composer dependencies."; exit 1 ;}
+
+# Set up the database.
+./con doctrine:database:create || { echo "Error: Failed to create the database."; exit 1 ;}
+./con doctrine:migrations:migrate --no-interaction || { echo "Error: Failed to run migrations." && exit 1 ;}
+./con doctrine:fixtures:load --no-interaction \
+    || { echo "Error: Failed to populate the database with fixtures." && exit 1 ;}
+
+# Run test suites.
+if [ "$1" = "--tests" ]; then
+    ./unit --configuration /var/www/application/phpunit.xml.dist || { echo "Error: Failed to run tests." && exit 1 ;}
+fi

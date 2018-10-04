@@ -1,0 +1,12 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "services",
+            "attributes": {
+                "name": "First Updated Service",
+                "slug": "first-updated-service"
+            }
+        }
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "data": [
+        {
+            "type": "agencies",
+            "id": "1",
+            "attributes": {
+                "name": "RoRo's Rocket Chips",
+                "contactEmail": "hello@roro.com",
+                "webAddress": "http://roro.com",
+                "shortDescription": "The fieriest chips known to man.",
+                "established": "2019"
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/1"
+            }
+        },
+        {
+            "type": "agencies",
+            "id": "2",
+            "attributes": {
+                "name": "Heavy Profesh Web Dev",
+                "contactEmail": "us@greatdevs.biz",
+                "webAddress": "https://greatdevs.biz",
+                "shortDescription": "The most professional developers in town.",
+                "established": "1994"
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/2"
+            }
+        },
+        {
+            "type": "agencies",
+            "id": "3",
+            "attributes": {
+                "name": "Shass Kinsalott",
+                "contactEmail": "sounds@shasskinsal.ot",
+                "webAddress": "https://shasskinsal.ot",
+                "shortDescription": "Post-modern audio branding agency based in London.",
+                "established": "2000"
+            },
+            "links": {
+                "self": "http://localhost/api/agencies/3"
+            }
+        }
+    ],
+    "links": {
+        "self": "http://localhost/api/agencies"
+    }
+}

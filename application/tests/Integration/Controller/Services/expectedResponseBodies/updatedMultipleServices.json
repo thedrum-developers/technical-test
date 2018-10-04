@@ -1,0 +1,62 @@
+{
+    "data": [
+        {
+            "type": "services",
+            "id": "1",
+            "attributes": {
+                "name": "First Updated Service",
+                "slug": "first-updated-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "2"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/services/first-updated-service/relationships/agencies",
+                        "related": "http://localhost/api/services/first-updated-service/agencies"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/services/first-updated-service"
+            }
+        },
+        {
+            "type": "services",
+            "id": "2",
+            "attributes": {
+                "name": "Second Updated Service",
+                "slug": "second-updated-service"
+            },
+            "relationships": {
+                "agencies": {
+                    "data": [
+                        {
+                            "type": "agencies",
+                            "id": "1"
+                        },
+                        {
+                            "type": "agencies",
+                            "id": "3"
+                        }
+                    ],
+                    "links": {
+                        "self": "http://localhost/api/services/second-updated-service/relationships/agencies",
+                        "related": "http://localhost/api/services/second-updated-service/agencies"
+                    }
+                }
+            },
+            "links": {
+                "self": "http://localhost/api/services/second-updated-service"
+            }
+        }
+    ]
+}
